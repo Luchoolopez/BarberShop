@@ -14,7 +14,7 @@ dist/
 .env.test
 .env.local
 .env.*.local
-
+.dockerignore
 # Logs
 logs
 *.log
