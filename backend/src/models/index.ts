@@ -1,3 +1,3 @@
-import { Admin } from "./admin.model";
+import { User } from "./user.mdel";
 
-export type { Admin as AdminType} from './admin.model'
+export type { User as UserType} from './user.mdel'

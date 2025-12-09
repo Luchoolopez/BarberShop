@@ -1,8 +1,10 @@
 import { z } from 'zod';
 
-export const createAdminSchema = z.object({
+export const createUserSchema = z.object({
     email: z.string().email({ message: 'Email invalido'}),
-    password: z.string().min(6, {message: 'Minimo 6 caracteres'})
+    password: z.string().min(6, {message: 'Minimo 6 caracteres'}),
+    phone: z.string().max(20),
+    role: z.enum(['admin', 'client'])
 });
 
-type CreateAdminType = z.infer<typeof createAdminSchema>
+type CreateUserType = z.infer<typeof createUserSchema>

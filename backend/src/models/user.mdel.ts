@@ -1,26 +1,30 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../config/database';
 
-interface AdminAttributes {
+interface UserAttributes {
     id: number,
     email: string,
     password: string,
+    phone:string,
+    role: 'admin' | 'client',
     created_at: Date,
     updated_at: Date,
 }
 
-type AdminCreationAttributes = Omit<AdminAttributes, 'id' | 'created_at' | 'updated_at'>;
+type UserCreationAttributes = Omit<UserAttributes, 'id' | 'created_at' | 'updated_at'>;
 
-export class Admin extends Model<AdminAttributes, AdminCreationAttributes>
-    implements AdminAttributes {
+export class User extends Model<UserAttributes, UserCreationAttributes>
+    implements UserAttributes {
     public id!: number;
     public email!: string;
     public password!: string;
+    public phone!: string;
+    public role!: 'admin' | 'client';
     public readonly created_at!: Date;
     public readonly updated_at!: Date;
 }
 
-Admin.init(
+User.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -35,6 +39,14 @@ Admin.init(
         password: {
             type: DataTypes.STRING(255),
             allowNull: false,
+        },
+        phone:{
+            type:DataTypes.STRING(20),
+            allowNull:false,
+        },
+        role:{
+            type:DataTypes.ENUM('admin', 'client'),
+            allowNull:false,
         },
         created_at: {
             type: DataTypes.DATE,
