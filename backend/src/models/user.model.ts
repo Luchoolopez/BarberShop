@@ -3,6 +3,7 @@ import { sequelize } from '../config/database';
 
 interface UserAttributes {
     id: number,
+    name: string,
     email: string,
     password: string,
     phone:string,
@@ -16,6 +17,7 @@ type UserCreationAttributes = Omit<UserAttributes, 'id' | 'created_at' | 'update
 export class User extends Model<UserAttributes, UserCreationAttributes>
     implements UserAttributes {
     public id!: number;
+    public name!: string;
     public email!: string;
     public password!: string;
     public phone!: string;
@@ -30,6 +32,10 @@ User.init(
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
+        },
+        name:{
+            type:DataTypes.STRING(25),
+            allowNull:false
         },
         email: {
             type: DataTypes.STRING(255),
