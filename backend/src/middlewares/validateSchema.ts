@@ -1,25 +1,28 @@
 import { Request, Response, NextFunction } from "express";
-import {ZodSchema, ZodError} from "zod";
+import { ZodType, ZodError, success } from "zod";
 
-export const validateSchema = (schema:ZodSchema) => {
-    return async(req:Request, res:Response, next:NextFunction) => {
-        try{
+export const validateSchema = (schema: ZodType<any>) =>
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
             await schema.parseAsync(req.body);
             next();
-        }catch(error){
-            if(error instanceof ZodError){
-                res.status(400).json({
-                    status: 'error',
+        } catch (error) {
+            if (error instanceof ZodError) {
+                const issues = error.issues.map((issue) => ({
+                    field: issue.path[0],
+                    message: issue.message,
+                }));
+
+                return res.status(400).json({
+                    success: false,
                     message: 'Error de validacion',
-                    error: error
+                    error: issues
                 });
             }
-            return;
-        }
-        res.status(500).json({
-            status:'error',
-            message:'Error interno del servidor'
-        });
 
+            return res.status(500).json({
+                success: false,
+                message: 'Error interno del servidor'
+            });
+        }
     }
-}

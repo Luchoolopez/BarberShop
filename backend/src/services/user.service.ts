@@ -39,5 +39,24 @@ export class UserService {
 
     }
 
+    async getUser(id:number):Promise<User | null>{
+        if(!id){
+            throw new Error('ID invalido');
+        }
+        const user = await User.findByPk(id, {
+            attributes: {exclude: ['password']}
+        });
+        if(!user){
+            throw new Error('Usuario no encontrado');
+        }
+        return user;
+    }
+
+    async getAllUsers():Promise<User[]>{
+        return await User.findAll({
+            attributes:{exclude: ['password']}
+        });
+    }
+
 
 }
