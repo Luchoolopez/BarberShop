@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS peluqueria_db;
-USE peluqueria_db;
+CREATE DATABASE IF NOT EXISTS barbershop_db;
+USE barbershop_db;
 
 -- 1. Tabla de Usuarios (Sirve para Admins y Clientes)
 -- Unificamos todo aquí. El campo 'role' define los permisos.
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS appointments (
     time_slot_id INT NOT NULL,  -- Cuándo
     service_id INT NOT NULL,    -- Qué se hace
     status ENUM('confirmed', 'cancelled', 'completed') DEFAULT 'confirmed',
-    recorded_price DECIMAL(10, 2) NOT NULL
+    recorded_price DECIMAL(10, 2) NOT NULL,
     cancellation_reason TEXT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     

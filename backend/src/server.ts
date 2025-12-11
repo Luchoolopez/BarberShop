@@ -1,5 +1,5 @@
 import config from './config/config';
-import { connectWithRetry } from './config/database';
+import { connectWithRetry, sequelize } from './config/database';
 import { makeApp } from './app';
 
 const app = makeApp();
@@ -9,6 +9,7 @@ app.listen(config.port, async() => {
     try{
         await connectWithRetry();
         console.log('DB conectado');
+        await sequelize.sync(); //sincroniza los modelos con la db
     }catch(error){
         console.error('Error conectando a la DB: ', error)
     }

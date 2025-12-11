@@ -5,7 +5,7 @@ import { router } from './routes';
 export function makeApp(){
     const app = express();
 
-    app.use(express());
+    app.use(express.json())
 
     const corsOptions = {
         origin:[
