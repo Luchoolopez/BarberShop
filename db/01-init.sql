@@ -1,32 +1,33 @@
 CREATE DATABASE IF NOT EXISTS barbershop_db;
 USE barbershop_db;
 
--- 1. Tabla de Usuarios (Sirve para Admins y Clientes)
--- Unificamos todo aquí. El campo 'role' define los permisos.
+-- 1. Tabla de Usuarios (Admins y Clientes)
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL, -- Recuerda guardar esto HASHEADO (bcrypt)
+    password VARCHAR(255) NOT NULL, 
     phone VARCHAR(20),
-    role ENUM('admin', 'client') DEFAULT 'client', -- Aquí diferenciamos
+    role ENUM('admin', 'client') DEFAULT 'client',
+    points_balance INT DEFAULT 0, -- NUEVO: Saldo de puntos
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- 2. Tabla de Servicios (NUEVA)
--- Indispensable para que el cliente elija "Corte de hombre" o "Alisado".
+-- 2. Tabla de Servicios (Catálogo)
 CREATE TABLE IF NOT EXISTS services (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL, -- Ej: "Corte Clásico", "Barba"
+    name VARCHAR(100) NOT NULL, 
     description TEXT,
-    price DECIMAL(10, 2) NOT NULL, -- Ej: 5000.00
-    duration_minutes INT DEFAULT 60, -- Dato útil para el futuro (aunque ahora uses slots fijos)
-    active BOOLEAN DEFAULT TRUE -- Por si dejas de ofrecer un servicio sin borrarlo del historial
+    price DECIMAL(10, 2) NOT NULL, 
+    duration_minutes INT DEFAULT 60, 
+    points_reward INT DEFAULT 0, -- NUEVO: Cuántos puntos gana el cliente al hacerlo
+    active BOOLEAN DEFAULT TRUE, 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- 3. Tabla de Bloques de Tiempo (Slots)
--- Mantenemos tu lógica de "Slots predefinidos por el admin".
+-- 3. Tabla de Bloques de Tiempo (Horarios disponibles)
 CREATE TABLE IF NOT EXISTS time_slots (
     id INT AUTO_INCREMENT PRIMARY KEY,
     slot_date DATE NOT NULL,
@@ -36,20 +37,53 @@ CREATE TABLE IF NOT EXISTS time_slots (
     UNIQUE KEY unique_slot (slot_date, start_time)
 );
 
--- 4. Tabla de Turnos (Appointments)
--- Ahora relaciona al User (cliente) con el Slot y el Servicio.
+-- 4. Tabla de Turnos (Reservas)
 CREATE TABLE IF NOT EXISTS appointments (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,       -- Quién reserva
-    time_slot_id INT NOT NULL,  -- Cuándo
-    service_id INT NOT NULL,    -- Qué se hace
+    user_id INT NOT NULL,      
+    time_slot_id INT NOT NULL, 
+    service_id INT NOT NULL,   
     status ENUM('confirmed', 'cancelled', 'completed') DEFAULT 'confirmed',
-    recorded_price DECIMAL(10, 2) NOT NULL,
+    recorded_price DECIMAL(10, 2) NOT NULL, -- Precio congelado al momento de reservar
     cancellation_reason TEXT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     
-    -- Relaciones (Foreign Keys)
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT,
     FOREIGN KEY (time_slot_id) REFERENCES time_slots(id) ON DELETE RESTRICT,
     FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE RESTRICT
+);
+
+-- 5. Tabla de Premios (Catálogo de canjes) -- NUEVA
+CREATE TABLE IF NOT EXISTS rewards (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,       
+    description TEXT,
+    points_cost INT NOT NULL,         -- Cuánto cuesta canjearlo
+    active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- 6. Tabla de Premios de Usuarios (Billetera de cupones) -- NUEVA
+CREATE TABLE IF NOT EXISTS user_rewards (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    reward_id INT NOT NULL,
+    is_used BOOLEAN DEFAULT FALSE,      -- Si ya lo gastó en el local
+    used_at TIMESTAMP NULL,             
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (reward_id) REFERENCES rewards(id) ON DELETE RESTRICT
+);
+
+-- 7. Historial de Puntos (Auditoría) -- NUEVA (Opcional pero recomendada)
+CREATE TABLE IF NOT EXISTS points_history (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    amount INT NOT NULL,        -- Ej: +100 o -500
+    description VARCHAR(255),   -- Ej: "Corte realizado", "Canje de premio"
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
