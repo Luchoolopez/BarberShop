@@ -21,7 +21,8 @@ export class UserService {
             email: userData.email,
             password: hashedPassword,
             phone: userData.phone,
-            role: 'client'
+            role: 'client',
+            points_balance: 0
         })
 
         return newUser;
@@ -69,6 +70,16 @@ export class UserService {
         return await User.findAll({
             attributes:{exclude: ['password']}
         });
+    }
+
+    async promoteToAdmin(id:number):Promise<User>{
+        const user = await User.findByPk(id);
+        if(!user){
+            throw new Error('Usuario no encontrado');
+        }
+        user.role = 'admin';
+        await user.save();
+        return user;
     }
 
 

@@ -105,4 +105,28 @@ export class UserController {
             })
         }
     }
+
+    promoteToAdmin = async(req:Request, res:Response) => {
+        try{
+            const {id} = req.params;
+            if(!id || isNaN(Number(id))){
+                return res.status(404).json({
+                    success:false,
+                    message:'ID invalido'
+                });
+            }
+            const user = await this.userService.promoteToAdmin(Number(id));
+
+            return res.status(200).json({
+                success:true,
+                message: 'Usuario promovido a administrador',
+                data:{id:user.id, name:user.name, role:user.role}
+            });
+        }catch(error:any){
+            return res.status(500).json({
+                success:false,
+                message:error.message
+            });
+        }
+    }
 }

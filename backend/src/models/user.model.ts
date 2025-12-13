@@ -8,6 +8,7 @@ interface UserAttributes {
     password: string,
     phone:string,
     role: 'admin' | 'client',
+    points_balance: number,
     created_at: Date,
     updated_at: Date,
 }
@@ -22,6 +23,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes>
     public password!: string;
     public phone!: string;
     public role!: 'admin' | 'client';
+    public points_balance!: number;
     public readonly created_at!: Date;
     public readonly updated_at!: Date;
 }
@@ -53,6 +55,10 @@ User.init(
         role:{
             type:DataTypes.ENUM('admin', 'client'),
             allowNull:false,
+        },
+        points_balance:{
+            type:DataTypes.INTEGER,
+            defaultValue:0
         },
         created_at: {
             type: DataTypes.DATE,
