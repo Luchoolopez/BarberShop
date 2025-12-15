@@ -1,5 +1,6 @@
 import config from './config/config';
 import { connectWithRetry, sequelize } from './config/database';
+import { setupAssociations } from './models/associations';
 import { makeApp } from './app';
 
 const app = makeApp();
@@ -9,7 +10,8 @@ app.listen(config.port, async() => {
     try{
         await connectWithRetry();
         console.log('DB conectado');
-        await sequelize.sync(); //sincroniza los modelos con la db
+        setupAssociations();
+        await sequelize.sync({alter:true}); //sincroniza los modelos con la db
     }catch(error){
         console.error('Error conectando a la DB: ', error)
     }
