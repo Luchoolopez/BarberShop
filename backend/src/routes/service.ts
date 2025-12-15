@@ -8,11 +8,11 @@ import { isAdmin } from "../middlewares/isAdmin.middleware";
 const serviceRouter = Router();
 const servicerController = new serviceController();
 
-//rutas publicas
+//publica
 serviceRouter.get('/', servicerController.getActiveServices);
 serviceRouter.get('/:id', servicerController.getServiceById);
 
-//rutas protegidas 
+//admin
 serviceRouter.post('/', authenticateToken, isAdmin, validateSchema(createServiceSchema), servicerController.createService);
 serviceRouter.put('/:id', authenticateToken, isAdmin, validateSchema(updateServiceSchema), servicerController.updateService);
 serviceRouter.delete('/:id', authenticateToken, isAdmin, servicerController.deleteService);
