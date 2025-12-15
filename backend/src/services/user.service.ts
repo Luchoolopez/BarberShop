@@ -1,5 +1,5 @@
 import { User } from "../models/user.model";
-import { registerUserType, LoginUserType } from "../validations/user.schema";
+import { registerUserType, LoginUserType, UpdateUserType } from "../validations/user.schema";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -82,5 +82,13 @@ export class UserService {
         return user;
     }
 
+    async updateUser(id:number, data:UpdateUserType):Promise<User>{
+        const user = await User.findByPk(id);
+        if(!user){
+            throw new Error('Usuario no encontrado');
+        }
+        await user.update(data);
+        return user;
+    }
 
 }

@@ -41,7 +41,7 @@ export class UserController {
                 message: 'Usuario registrado exitosamente',
                 data: result
             })
-        } catch (error:any) {
+        } catch (error: any) {
             if (error.message === 'El usuario ya existe') {
                 return res.status(409).json({
                     success: false,
@@ -57,75 +57,99 @@ export class UserController {
         }
     }
 
-    getUser = async(req:Request, res:Response) => {
-        try{
+    getUser = async (req: Request, res: Response) => {
+        try {
             const { id } = req.params;
-            if(!id || isNaN(Number(id))){
+            if (!id || isNaN(Number(id))) {
                 return res.status(400).json({
-                    success:false,
+                    success: false,
                     message: 'El ID es invalido'
                 });
             }
 
             const user = await this.userService.getUser(Number(id));
 
-            if(!user){
+            if (!user) {
                 return res.status(404).json({
-                    success:false,
+                    success: false,
                     message: 'Usuario no encontrado'
                 });
             }
             return res.status(200).json({
-                success:true,
-                data:user
+                success: true,
+                data: user
             });
-        }catch(error){
+        } catch (error) {
             console.error(error);
             return res.status(500).json({
-                success:false,
-                message:'Error interno del servidor'
+                success: false,
+                message: 'Error interno del servidor'
             });
         }
     }
 
-    getUsers = async(req:Request, res:Response) => {
-        try{
+    getUsers = async (req: Request, res: Response) => {
+        try {
             const users = await this.userService.getAllUsers();
 
             return res.status(200).json({
-                success:true,
+                success: true,
                 message: 'Usuarios obtenidos correctamente',
-                data:users
+                data: users
             });
-        }catch(error){
+        } catch (error) {
             console.error(error);
             return res.status(500).json({
-                success:false,
-                message:'Error interno del servidor'
+                success: false,
+                message: 'Error interno del servidor'
             })
         }
     }
 
-    promoteToAdmin = async(req:Request, res:Response) => {
-        try{
-            const {id} = req.params;
-            if(!id || isNaN(Number(id))){
+    promoteToAdmin = async (req: Request, res: Response) => {
+        try {
+            const { id } = req.params;
+            if (!id || isNaN(Number(id))) {
                 return res.status(404).json({
-                    success:false,
-                    message:'ID invalido'
+                    success: false,
+                    message: 'ID invalido'
                 });
             }
             const user = await this.userService.promoteToAdmin(Number(id));
 
             return res.status(200).json({
-                success:true,
+                success: true,
                 message: 'Usuario promovido a administrador',
-                data:{id:user.id, name:user.name, role:user.role}
+                data: { id: user.id, name: user.name, role: user.role }
             });
-        }catch(error:any){
+        } catch (error: any) {
             return res.status(500).json({
-                success:false,
-                message:error.message
+                success: false,
+                message: error.message
+            });
+        }
+    }
+
+    updateUser = async (req: Request, res: Response) => {
+        try {
+            const { id } = req.params;
+            if (!id || isNaN(Number(id))) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'ID invalido'
+                });
+            }
+            const updatedUser = await this.userService.updateUser(Number(id), req.body);
+            return res.status(200).json({
+                success: true,
+                message: 'Usuario actualizado correctamente',
+                data: updatedUser
+            })
+        } catch (error: any) {
+            console.error(error);
+            return res.status(500).json({
+                success: false,
+                message: error.message
             });
         }
     }
