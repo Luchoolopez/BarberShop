@@ -15,6 +15,7 @@ appointmentRouter.put('/:id/cancel', authenticateToken, appointmentController.ca
 
 //admin
 appointmentRouter.get('/daily', authenticateToken, isAdmin, appointmentController.getDailyAgenda);
+appointmentRouter.put('/:id/complete', authenticateToken, isAdmin, appointmentController.completeAppointment);
 
 export default appointmentRouter;
 export {appointmentRouter as Router};

@@ -2,6 +2,7 @@ import { User } from "./user.model";
 import { Service } from "./service.model";
 import { Appointment } from "./appointment.model";
 import { TimeSlot } from "./time-slot.model";
+import { PointsHistory } from "./points-history.model";
 
 export const setupAssociations = () => {
     //un usuario puede tener muchos turnos
@@ -18,4 +19,7 @@ export const setupAssociations = () => {
     TimeSlot.hasOne(Appointment, {foreignKey:'time_slot_id', as:'appointment'});
     //un turno pertenece a un bloque de tiempo 
     Appointment.belongsTo(TimeSlot, {foreignKey:'time_slot_id', as:'time_slot'});
+
+    User.hasMany(PointsHistory, {foreignKey:'user_id', as:'history'});
+    PointsHistory.belongsTo(User, {foreignKey:'user_id'});
 }

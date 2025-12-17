@@ -1,5 +1,6 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../config/database";
+import { Service } from "./service.model";
 
 export enum AppointmentStatus {
     CONFIRMED = 'confirmed',
@@ -17,6 +18,7 @@ interface AppointmentAtributes {
     cancellation_reason?: string;
     created_at: Date;
     updated_at: Date;
+    service?:Service
 }
 
 type AppointmentCreationAttributes = Optional<AppointmentAtributes, 'id' | 'status' | 'cancellation_reason' | 'created_at' | 'updated_at'>;
@@ -32,6 +34,7 @@ export class Appointment extends Model<AppointmentAtributes, AppointmentCreation
     public cancellation_reason?: string | undefined;
     public readonly created_at!: Date;
     public readonly updated_at!: Date;
+    public readonly service?: Service;
 }
 
 Appointment.init(

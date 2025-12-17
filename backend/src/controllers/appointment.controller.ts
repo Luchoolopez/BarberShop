@@ -43,7 +43,7 @@ export class AppointmentController {
     cancelAppointment = async (req: Request, res: Response) => {
         try {
             const { id } = req.params;
-            
+
             if (!id || isNaN(Number(id))) {
                 return res.status(400).json({
                     success: false,
@@ -66,55 +66,81 @@ export class AppointmentController {
                 message: 'Turno cancelado correctamente',
                 data: appointment
             });
-        } catch (error:any) {
+        } catch (error: any) {
             return res.status(400).json({
-                success:false,
-                message:error.message
+                success: false,
+                message: error.message
             });
         }
     }
 
-    getMyHistory = async(req:Request, res:Response) => {
-        try{
+    completeAppointment = async (req: Request, res: Response) => {
+        try {
+            const { id } = req.params;
+
+            if (!id || isNaN(Number(id))) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'El ID es invalido'
+                });
+            }
+
+            const appointment = await this.appointmentService.completeAppointment(Number(id));
+            return res.status(200).json({
+                success: true,
+                message: 'Turno completado y puntos asignados',
+                data: appointment
+            });
+        } catch (error: any) {
+            return res.status(400).json({
+                success: false,
+                message: error.message
+            });
+        }
+    }
+
+
+    getMyHistory = async (req: Request, res: Response) => {
+        try {
             const userId = (req as AuthRequest).user?.id;
-            if(!userId){
+            if (!userId) {
                 return res.status(401).json({
-                    message:'No autorizado'
+                    message: 'No autorizado'
                 });
             }
             const appointments = await this.appointmentService.getAppointmentByUser(userId);
             return res.status(200).json({
-                success:true,
-                count:appointments.length,
-                data:appointments
+                success: true,
+                count: appointments.length,
+                data: appointments
             });
-        }catch(error:any){
+        } catch (error: any) {
             return res.status(500).json({
-                success:false,
-                message:error.message
+                success: false,
+                message: error.message
             })
         }
     }
 
-    getDailyAgenda = async(req:Request, res:Response) => {
-        try{
-            const {date} = req.query;
-            if(!date || typeof date !== 'string'){
+    getDailyAgenda = async (req: Request, res: Response) => {
+        try {
+            const { date } = req.query;
+            if (!date || typeof date !== 'string') {
                 return res.status(400).json({
-                    message:'Fecha requerida (YYYY-MM-DD)'
+                    message: 'Fecha requerida (YYYY-MM-DD)'
                 });
             }
             const appointments = await this.appointmentService.getAppointmentByDate(date);
             return res.status(200).json({
-                success:true,
-                date:date,
-                count:appointments.length,
-                data:appointments
+                success: true,
+                date: date,
+                count: appointments.length,
+                data: appointments
             });
-        }catch(error:any){
+        } catch (error: any) {
             return res.status(500).json({
-                success:false,
-                message:error.message
+                success: false,
+                message: error.message
             })
         }
     }

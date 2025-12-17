@@ -4,6 +4,12 @@ import { TimeSlot } from "../models/time-slot.model";
 import { TimeSlotService } from "./time-slot.service";
 import { CreateAppointmentType } from "../validations/appointment.schema";
 import { User } from "../models/user.model";
+import { sequelize } from "../config/database";
+import { PointsHistory } from "../models/points-history.model";
+
+/*
+Tengo que transaction en create y cancel
+*/
 
 export class AppointmentService {
     private timeSlotService: TimeSlotService;
@@ -14,6 +20,7 @@ export class AppointmentService {
 
     async createAppointment(userId: number, data: CreateAppointmentType) {
         const { service_id, time_slot_id } = data;
+        const t = await sequelize.transaction();
 
         const service = await Service.findByPk(service_id);
         if (!service || !service.active) {
@@ -64,6 +71,50 @@ export class AppointmentService {
         return appointment;
     }
 
+    async completeAppointment(appointmentId:number){
+        const t = await sequelize.transaction();
+        try{
+            const appointment = await Appointment.findByPk(appointmentId, {
+                include:[{model: Service, as: 'service'}],
+                transaction: t
+            });
+            if(!appointment){
+                throw new Error('Turno no encontrado');
+            }
+            if(appointment.status !== AppointmentStatus.CONFIRMED){
+                throw new Error('Solo se pueden completar turnos confirmados');
+            }
+            appointment.status = AppointmentStatus.COMPLETED;
+            await appointment.save({transaction:t});
+
+            //logica de premios
+            if(!appointment.service){
+                throw new Error('El turno no tiene un servicio asociado cargado');
+            }
+
+            const service = appointment.service;
+            const pointsToReward = service.points_reward || 0;
+
+            if(pointsToReward > 0){
+                const user = await User.findByPk(appointment.user_id, {transaction:t});
+                if(user){
+                    await user.increment('points_balance', {by:pointsToReward, transaction:t});
+                    await PointsHistory.create({
+                        user_id:user.id,
+                        amount:pointsToReward,
+                        description: `Servicio completado: ${service.name}`,
+                    }, {transaction:t});
+                }
+            }
+
+            await t.commit();
+            return appointment;
+        }catch(error){
+            await t.rollback();
+            throw error;
+        }
+    }
+
     async getAppointmentByUser(userId:number){
         return await Appointment.findAll({
             where:{user_id: userId},
@@ -95,7 +146,7 @@ export class AppointmentService {
                 {
                     model:User,
                     as:'client',
-                    attributes:['name', 'duration_minutes', 'price']
+                    attributes:['name', 'email', 'phone_number']
                 }
             ],
             order:[[
