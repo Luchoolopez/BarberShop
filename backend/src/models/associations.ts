@@ -22,4 +22,12 @@ export const setupAssociations = () => {
 
     User.hasMany(PointsHistory, {foreignKey:'user_id', as:'history'});
     PointsHistory.belongsTo(User, {foreignKey:'user_id'});
+
+
+    /*User.hasMany(UserReward, { foreignKey: 'user_id', as: 'redeemedRewards' });
+    UserReward.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
+
+    // 3. Un Premio puede ser canjeado muchas veces
+    Reward.hasMany(UserReward, { foreignKey: 'reward_id', as: 'redemptions' });
+    UserReward.belongsTo(Reward, { foreignKey: 'reward_id', as: 'reward' });*/
 }

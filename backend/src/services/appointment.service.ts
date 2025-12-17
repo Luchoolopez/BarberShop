@@ -122,7 +122,7 @@ export class AppointmentService {
                 {
                     model:Service,
                     as:'service',
-                    attributes:['name', 'price', 'duration_minutes']
+                    attributes:['name', 'price', 'duration_minutes', 'points_reward']
                 },
                 {
                     model:TimeSlot,
