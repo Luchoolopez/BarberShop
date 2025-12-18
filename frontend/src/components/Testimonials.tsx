@@ -20,7 +20,6 @@ export const Testimonials: React.FC = () => {
                 <p>CORTADOR CON 20 AÑOS DE EXPERIENCIA</p>
             </div>
         </Carousel.Item>
-        {/* Puedes agregar más items aquí */}
       </Carousel>
     </Container>
   );

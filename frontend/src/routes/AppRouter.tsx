@@ -1,10 +1,13 @@
 import { Routes, Route } from 'react-router-dom';
-import {Home} from '../pages/home';
+import { MainLayout } from '../layout/MainLayout';
+import { Home } from '../pages/home';
 
-export function AppRouter(){
-    return(
+export function AppRouter() {
+    return (
         <Routes>
-            <Route path='/' element={<Home/>}/>
+            <Route element={<MainLayout/>}>
+                <Route path='/' element={<Home />} />
+            </Route>
         </Routes>
     )
 }

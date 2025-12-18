@@ -1,0 +1,6 @@
+.portada_principal {
+  background-image: url('/foto_portada_principal.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

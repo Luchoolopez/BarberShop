@@ -11,10 +11,6 @@ export const AboutSection: React.FC = () => {
             <p>Todos los días buscamos un momento en que el corazón traspase nuestro cuerpo...</p>
             <p>“Creativo de raza” es como alguna vez me llamo una clienta...</p>
         </Col>
-        <Col md={6} className="fotos_body d-flex gap-2">
-            <img src="/images/foto_1.jpeg" alt="Trabajo 1" className="img-fluid w-50" />
-            <img src="/images/foto_2.jpeg" alt="Trabajo 2" className="img-fluid w-50" />
-        </Col>
       </Row>
     </Container>
   );
