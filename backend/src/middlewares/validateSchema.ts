@@ -2,8 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import { ZodType, ZodError } from "zod";
 
 export const validateSchema = (
-    schema: ZodType<any>, 
-    source: 'body' | 'query' | 'params' = 'body' 
+    schema: ZodType<any>,
+    source: 'body' | 'query' | 'params' = 'body'
 ) =>
     async (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -16,8 +16,11 @@ export const validateSchema = (
                 data = req.params;
             }
 
+            console.log("Body recibido:", req.body);
+            console.log("Content-Type:", req.get('Content-Type'));
+
             await schema.parseAsync(data);
-            
+
             next();
         } catch (error) {
             if (error instanceof ZodError) {

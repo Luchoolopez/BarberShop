@@ -3,6 +3,9 @@ import { Service } from "./service.model";
 import { Appointment } from "./appointment.model";
 import { TimeSlot } from "./time-slot.model";
 import { PointsHistory } from "./points-history.model";
+import { Reward } from "./reward.model";
+import { UserReward } from "./user-reward.model";
+
 
 export const setupAssociations = () => {
     //un usuario puede tener muchos turnos
@@ -24,10 +27,10 @@ export const setupAssociations = () => {
     PointsHistory.belongsTo(User, {foreignKey:'user_id'});
 
 
-    /*User.hasMany(UserReward, { foreignKey: 'user_id', as: 'redeemedRewards' });
+    User.hasMany(UserReward, { foreignKey: 'user_id', as: 'redeemedRewards' });
     UserReward.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 
     // 3. Un Premio puede ser canjeado muchas veces
     Reward.hasMany(UserReward, { foreignKey: 'reward_id', as: 'redemptions' });
-    UserReward.belongsTo(Reward, { foreignKey: 'reward_id', as: 'reward' });*/
+    UserReward.belongsTo(Reward, { foreignKey: 'reward_id', as: 'reward' });
 }
