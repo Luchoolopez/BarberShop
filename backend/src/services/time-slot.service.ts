@@ -1,5 +1,8 @@
 import { TimeSlot } from "../models/time-slot.model";
 import { GenerateTimeSlotType } from "../validations/time-slot.schema";
+import { Appointment } from "../models/appointment.model";
+import { User } from "../models/user.model";
+import { Service } from "../models/service.model";
 
 export class TimeSlotService{
     private timeToMinutes(timeStr:string): number {
@@ -80,5 +83,33 @@ export class TimeSlotService{
         slot.is_booked = false;
         await slot.save();
         return slot;
+    }
+
+    async getAdminSlotsByDate(date: string): Promise<TimeSlot[]> {
+        return await TimeSlot.findAll({
+            where: {
+                slot_date: date
+            },
+            include: [
+                {
+                    model: Appointment,
+                    as: 'appointment', 
+                    required: false,   
+                    include: [
+                        {
+                            model: User,
+                            as: 'client', 
+                            attributes: ['id', 'name', 'email', 'phone']
+                        },
+                        {
+                            model: Service,
+                            as: 'service',
+                            attributes: ['id', 'name', 'price']
+                        }
+                    ]
+                }
+            ],
+            order: [['start_time', 'ASC']]
+        });
     }
 }

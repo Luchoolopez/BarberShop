@@ -84,4 +84,36 @@ export class TimeSlotController {
             });
         }
     }
+
+    getAdminSlotsByDate = async (req: Request, res: Response) => {
+        try {
+            const { date } = req.query;
+            if (!date || typeof date !== 'string') {
+                return res.status(400).json({
+                    success: false,
+                    mesagge: 'La fecha no es valida, tiene que ser (YYYY-MM-DD)'
+                })
+            }
+
+            const adminSlots = await this.timeSlotService.getAdminSlotsByDate(date);
+
+            if ((await adminSlots).length === 0) {
+                return res.status(200).json({
+                    success: true,
+                    message: 'No hay horarios disponibles para esta fecha',
+                    data: []
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                data: adminSlots
+            });
+        } catch (error:any) {
+            return res.status(500).json({
+                success: false,
+                message: 'Error al obtener los horarios',
+                error: error.message
+            });
+        }
+    }
 }

@@ -11,8 +11,10 @@ const timeSlotController = new TimeSlotController();
 //publica
 timeSlotRouter.get('/', validateSchema(getTimeSlotsQuerySchema, 'query'), timeSlotController.getSlotsByDate);
 //admin
+timeSlotRouter.get('/admin-timeslot', authenticateToken, isAdmin, validateSchema(getTimeSlotsQuerySchema, 'query'), timeSlotController.getAdminSlotsByDate )
 timeSlotRouter.post('/generate', authenticateToken, isAdmin, validateSchema(generateTimeSlotsSchema), timeSlotController.generateSlots);
 timeSlotRouter.delete('/', authenticateToken, isAdmin, validateSchema(generateTimeSlotsSchema, 'query'), timeSlotController.deleteSlotsByDate);
+
 
 export default timeSlotRouter;
 export {timeSlotRouter as Router};

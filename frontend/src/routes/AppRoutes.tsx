@@ -8,6 +8,7 @@ import { AdminRoute } from './AdminRoute';
 import { AdminHome } from '../pages/admin/AdminHome';
 import { AdminServices } from '../pages/admin/AdminServices';
 import { AdminLayout } from '../layout/AdminLayout';
+import { AdminCalendar } from '../pages/admin/AdminCalendar';
 
 export function AppRouter() {
     return (
@@ -23,6 +24,7 @@ export function AppRouter() {
                 <Route element={<AdminLayout/>}>
                     <Route path='/admin' element={<AdminHome />} />
                     <Route path='/admin/servicios' element={<AdminServices />} />
+                    <Route path='/admin/calendario' element={<AdminCalendar/>}/>
                 </Route>
             </Route>
         </Routes>

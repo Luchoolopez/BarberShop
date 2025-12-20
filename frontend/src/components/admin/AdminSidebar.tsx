@@ -38,7 +38,7 @@ export const AdminSidebar = () => {
 
                     <Nav.Link as={Link} to="/" className="admin-nav-link text-white" title="Ir a la tienda">
                         <FaStore className="admin-nav-icon" />
-                        <span>Ver Tienda</span>
+                        <span>Ver Sitio Web</span>
                     </Nav.Link>
                 </div>
             </div>
