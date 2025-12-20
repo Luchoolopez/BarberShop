@@ -1,17 +1,21 @@
 import apiClient from "./apiClient";
-import type{ AuthResponse, LoginDTO, RegisterDTO } from "../types/auth.types";
+import type { AuthResponse, LoginDTO, RegisterDTO } from "../types/auth.types";
 
 export const authService = {
-    login:async(credentials:LoginDTO):Promise<AuthResponse> => {
+    login: async (credentials: LoginDTO): Promise<AuthResponse> => {
         const response = await apiClient.post<AuthResponse>('/user/login', credentials);
-        if(response.data.token){
-            localStorage.setItem('accessToken', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
+        
+        const { token, user } = response.data.data;
+
+        if (token) {
+            localStorage.setItem('accessToken', token);
+            localStorage.setItem('user', JSON.stringify(user));
         }
+        
         return response.data;
     },
 
-    register:async(data:RegisterDTO):Promise<AuthResponse> => {
+    register: async (data: RegisterDTO): Promise<AuthResponse> => {
         const response = await apiClient.post<AuthResponse>('/user/register', data);
         return response.data;
     },
@@ -21,8 +25,8 @@ export const authService = {
         localStorage.removeItem('user');
     },
 
-    checkAuth:async():Promise<AuthResponse['user']> => {
-        const response = await apiClient.get<AuthResponse['user']>('/auth/me');
-        return response.data;
+    checkAuth: async (): Promise<AuthResponse['data']['user']> => {
+        const response = await apiClient.get<AuthResponse>('/auth/me');
+        return response.data.data.user;
     }
 }

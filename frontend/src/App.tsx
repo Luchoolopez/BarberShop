@@ -1,4 +1,4 @@
-import { AppRouter } from "./routes/AppRouter";
+import { AppRouter } from "./routes/AppRoutes";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {

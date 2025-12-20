@@ -32,7 +32,7 @@ export const HeroSection: React.FC = () => {
                     size="lg" 
                     className="px-4 rounded-pill fw-bold"
                 >
-                  Ver Cortes
+                  Turnos
                 </Button>
                 
                 <Button 

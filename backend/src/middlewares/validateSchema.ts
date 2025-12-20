@@ -16,9 +16,6 @@ export const validateSchema = (
                 data = req.params;
             }
 
-            console.log("Body recibido:", req.body);
-            console.log("Content-Type:", req.get('Content-Type'));
-
             await schema.parseAsync(data);
 
             next();
