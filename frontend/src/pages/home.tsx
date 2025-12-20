@@ -12,7 +12,7 @@ export const Home: React.FC = () => {
       <PricingList />
       <Testimonials />
       
-      <section className="mapa_contenedor my-4">
+      <section className="mapa_contenedor">
          <h1 className="text-center mb-3">¿Dónde podés encontrarnos?</h1>
          <iframe 
             className="map w-100"

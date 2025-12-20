@@ -18,10 +18,10 @@ export const PricingList: React.FC = () => {
   );
 
   return (
-    <section className="py-5 bg-body-tertiary">
+    <section className="py-5 bg-body-tertiary border-top border-2">
       <Container>
         <Row className="align-items-start g-5">
-          <Col lg={5} className="text-center text-lg-start sticky-lg-top" style={{ top: '2rem' }}>
+          <Col lg={5} className="text-center text-lg-start" style={{ top: '2rem' }}>
             <h2 className="display-4 fw-bold mb-3">NUESTROS PRECIOS</h2>
             <p className="lead text-muted mb-4">
               Calidad premium al mejor precio. <br />
