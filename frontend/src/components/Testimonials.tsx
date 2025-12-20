@@ -5,7 +5,7 @@ export const Testimonials: React.FC = () => {
   return (
     <Container className="testimonios my-5 text-center">
       <h1 className="mb-4">TESTIMONIOS</h1>
-      <Carousel data-bs-theme="dark">
+      <Carousel>
         <Carousel.Item>
             <div className="d-flex flex-column align-items-center p-5">
                 <h3>"El curso con Barber Shop fue un antes y un despues..."</h3>

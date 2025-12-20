@@ -9,7 +9,7 @@ const precios = [
 
 export const PricingList: React.FC = () => {
   return (
-    <div className="descripcion_precios py-5 bg-light">
+    <div className="descripcion_precios py-5 bg-body-tertiary">
       <Container className="d-flex justify-content-between align-items-center">
         <div className="descripcion_precios_informacion">
             <h1>PRECIOS</h1>

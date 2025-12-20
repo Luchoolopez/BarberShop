@@ -1,8 +1,7 @@
 import { createContext, useState, useContext, useEffect, type ReactNode } from 'react';
 import { authService } from '../services/auth.service';
-import type { LoginDTO, RegisterDTO, AuthResponse } from '../types/auth.types';
-
-type User = AuthResponse['user'];
+// Importamos User explícitamente
+import type { LoginDTO, RegisterDTO, AuthResponse, User } from '../types/auth.types';
 
 interface AuthContextType {
     isAuthenticated: boolean;
@@ -10,11 +9,9 @@ interface AuthContextType {
     login: (values: LoginDTO) => Promise<void>;
     register: (values: RegisterDTO) => Promise<void>;
     logout: () => void;
-    
     loading: boolean;
     error: string | null;
     setError: (error: string | null) => void;
-    
     isAuthModalOpen: boolean;
     openAuthModal: () => void;
     closeAuthModal: () => void;
@@ -57,8 +54,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setError(null);
         try {
             const response = await authService.login(values);
-            setUser(response.user);
-            closeAuthModal();
+            
+            const { user, token } = response.data; 
+
+            setUser(user);
+            
+            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('accessToken', token); 
+            
+            closeAuthModal?.();
         } catch (err: any) {
             const msg = err.response?.data?.message || "Error al iniciar sesión";
             setError(msg);
@@ -86,6 +90,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const handleLogout = () => {
         authService.logout();
         setUser(null);
+        localStorage.removeItem('user');
+        localStorage.removeItem('accessToken');
         window.location.href = '/';
     };
 
@@ -100,7 +106,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         loading,
         error,
         setError,
-        
         isAuthModalOpen,
         openAuthModal,
         closeAuthModal,
