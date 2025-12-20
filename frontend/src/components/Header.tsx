@@ -22,7 +22,7 @@ export const Header: React.FC = () => {
                 {isAuthenticated ? 'Mi cuenta' : 'Iniciar sesion'}
               </Nav.Link>
               <Nav.Link href="/turnos">Sacar Turno</Nav.Link>
-              <Nav.Link href="/contacto">Contactos</Nav.Link>
+              <Nav.Link href="/beneficios">Beneficios</Nav.Link>
               <Nav.Link href={user?.role === 'admin' ? '/admin' : ''}>{user?.role ? 'Panel de Admin' : ''}</Nav.Link>
             </Nav>
           </Navbar.Collapse>

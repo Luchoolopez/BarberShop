@@ -18,7 +18,7 @@ export const PricingList: React.FC = () => {
   );
 
   return (
-    <section className="py-5 bg-body-tertiary border-top border-2">
+    <section className="py-5 bg-body-tertiary border-top border-">
       <Container>
         <Row className="align-items-start g-5">
           <Col lg={5} className="text-center text-lg-start" style={{ top: '2rem' }}>
