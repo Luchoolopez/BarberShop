@@ -15,8 +15,8 @@ export const authService = {
         return response.data;
     },
 
-    register: async (data: RegisterDTO): Promise<AuthResponse> => {
-        const response = await apiClient.post<AuthResponse>('/user/register', data);
+    register: async (data: RegisterDTO): Promise<AuthResponse['data']['user']> => {
+        const response = await apiClient.post<AuthResponse['data']['user']>('/user/register', data);
         return response.data;
     },
 
@@ -28,5 +28,20 @@ export const authService = {
     checkAuth: async (): Promise<AuthResponse['data']['user']> => {
         const response = await apiClient.get<AuthResponse>('/auth/me');
         return response.data.data.user;
+    },
+
+    getUsers: async () => {
+        const response = await apiClient.get<AuthResponse>('/user');
+        return response.data.data;
+    },
+
+    promoteToAdmin: async (id: number): Promise<AuthResponse['data']['user']> => {
+        const response = await apiClient.put<AuthResponse['data']['user']>(`/user/promote/${id}`);
+        return response.data;
+    },
+
+    updateUser: async (id: number, data: Partial<RegisterDTO>): Promise<AuthResponse['data']['user']> => {
+        const response = await apiClient.put<AuthResponse['data']['user']>(`/user/${id}`, data);
+        return response.data;
     }
 }
