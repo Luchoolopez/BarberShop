@@ -130,7 +130,7 @@ export const Login: React.FC = () => {
 
                         <p className="text-center mt-4 mb-0 text-muted" style={{ fontSize: '0.95rem' }}>
                             ¿No tenés cuenta aún? <br/>
-                            <Link to="/register" className="fw-bold text-dark" style={{ textDecoration: 'none' }}>
+                            <Link to="/registrarse" className="fw-bold text-dark" style={{ textDecoration: 'none' }}>
                                 Crear cuenta
                             </Link>
                         </p>

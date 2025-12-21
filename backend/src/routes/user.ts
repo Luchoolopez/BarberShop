@@ -10,12 +10,12 @@ const userController = new UserController();
 //publica
 userRouter.post('/login', validateSchema(loginUserSchema), userController.login);
 userRouter.post('/register', validateSchema(registerUserSchema), userController.register);
+userRouter.get('/me', authenticateToken, userController.getMe);
 userRouter.get('/:id', userController.getUser);
 userRouter.get('/', userController.getUsers);
-userRouter.put('/:id', authenticateToken ,validateSchema(updateUserSchema), userController.updateUser);
-
+userRouter.put('/:id', authenticateToken, validateSchema(updateUserSchema), userController.updateUser);
 //admin
-userRouter.put('/promote/:id',authenticateToken ,userController.promoteToAdmin);
+userRouter.put('/promote/:id', authenticateToken, userController.promoteToAdmin);
 
 export default userRouter;
 export { userRouter as Router };

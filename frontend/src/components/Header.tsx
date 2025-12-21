@@ -5,7 +5,7 @@ import { useAuthContext } from '../context/AuthContext';
 export const Header: React.FC = () => {
   const { isAuthenticated, user } = useAuthContext();
   return (
-    <header className="header sticky-top">
+    <header className="header sticky-top border-bottom border-2">
       <Navbar expand="lg" className="py-3 bg-body-tertiary">
         <Container>
           <Navbar.Brand href="/" className="titulo fw-bold">
@@ -23,7 +23,7 @@ export const Header: React.FC = () => {
               </Nav.Link>
               <Nav.Link href="/calendario-turnos">Sacar Turno</Nav.Link>
               <Nav.Link href="/beneficios">Beneficios</Nav.Link>
-              <Nav.Link href={user?.role === 'admin' ? '/admin/servicios' : ''}>{user?.role ? 'Panel de Admin' : ''}</Nav.Link>
+              <Nav.Link href={user?.role === 'admin' ? '/admin/servicios' : ''}>{user?.role === 'admin' ? 'Panel de Admin' : ''}</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

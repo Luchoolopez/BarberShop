@@ -13,12 +13,9 @@ interface ClientSlotListProps {
 export const ClientSlotList: React.FC<ClientSlotListProps> = ({ slots, onSelectSlot, selectedSlotId }) => {
     const now = new Date();
 
-    // Filtramos horarios pasados y ordenamos
     const availableSlots = slots.filter(slot => {
-        // Si está reservado, no lo mostramos (o podrías mostrarlo disabled)
         if (slot.is_booked) return false;
 
-        // Verificar si ya pasó la hora hoy
         const slotDate = parseISO(slot.slot_date);
         const [hours, minutes] = slot.start_time.split(':').map(Number);
         const slotDateTime = set(slotDate, { hours, minutes });

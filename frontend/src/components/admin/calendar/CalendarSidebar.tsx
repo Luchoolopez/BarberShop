@@ -11,7 +11,7 @@ interface CalendarSidebarProps {
 
 export const CalendarSidebar: React.FC<CalendarSidebarProps> = ({ selectedDay, onSelect }) => {
     return (
-        <Card className="shadow-sm border-0 h-100">
+        <Card className="shadow-sm border-2 h-100">
             <Card.Body className="d-flex justify-content-center align-items-start p-3">
                 <DayPicker
                     mode="single"

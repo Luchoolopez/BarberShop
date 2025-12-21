@@ -95,6 +95,9 @@ export class TimeSlotService{
                     model: Appointment,
                     as: 'appointment', 
                     required: false,   
+                    where:{
+                        status:['confirmed', 'completed']
+                    },
                     include: [
                         {
                             model: User,

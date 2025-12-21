@@ -169,4 +169,26 @@ export class AppointmentService {
             order: [['created_at', 'DESC']] 
         });
     }
+
+
+    async updateAppointmentStatus(id: number, newStatus: AppointmentStatus) {
+        const appointment = await Appointment.findByPk(id);
+        if (!appointment) {
+            throw new Error('Turno no encontrado');
+        }
+        if (appointment.status === newStatus) {
+            return appointment;
+        }
+        
+        if (newStatus === AppointmentStatus.COMPLETED) {
+            return await this.completeAppointment(id);
+        }
+
+        if (newStatus === AppointmentStatus.CANCELLED) {
+            return await this.cancelAppointment(id, appointment.user_id, true);
+        }
+
+        appointment.status = newStatus;
+        return await appointment.save();
+    }
 }

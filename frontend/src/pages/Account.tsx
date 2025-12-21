@@ -9,14 +9,15 @@ import { authService } from '../services/auth.service';
 import { appointmentService } from '../services/appointment.service';
 import type { User } from '../types/auth.types';
 import type { Appointment } from '../types/appointment.types';
+import { useAuthContext } from '../context/AuthContext';
 
 export const Account: React.FC = () => {
     const [user, setUser] = useState<User | null>(null);
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const { logout } = useAuthContext();
 
-    // Cargar datos al montar
     useEffect(() => {
         fetchProfileData();
     }, []);
@@ -24,11 +25,9 @@ export const Account: React.FC = () => {
     const fetchProfileData = async () => {
         setLoading(true);
         try {
-            // 1. Traemos datos frescos del usuario (para ver los puntos actualizados)
             const userData = await authService.checkAuth();
             setUser(userData);
 
-            // 2. Traemos el historial de reservas
             const history = await appointmentService.getMyHistory();
             setAppointments(history);
         } catch (e) {
@@ -71,12 +70,9 @@ export const Account: React.FC = () => {
     return (
         <Container className="py-5">
             {error && <Alert variant="danger">{error}</Alert>}
-
-            {/* SECCIÓN SUPERIOR: DATOS Y PUNTOS */}
             <Row className="g-4 mb-5">
-                {/* Tarjeta de Datos Personales */}
                 <Col md={8}>
-                    <Card className="shadow-sm border-0 h-100">
+                    <Card className="shadow-sm border-2 h-100">
                         <Card.Body className="d-flex align-items-center p-4">
                             <div className="me-4 text-secondary">
                                 <FaUserCircle size={80} />
@@ -99,9 +95,8 @@ export const Account: React.FC = () => {
                     </Card>
                 </Col>
 
-                {/* Tarjeta de Puntos (Gamification) */}
                 <Col md={4}>
-                    <Card className="shadow-sm border-0 h-100 bg-primary text-white">
+                    <Card className="shadow-sm border-2 h-100 bg-primary text-white">
                         <Card.Body className="d-flex flex-column justify-content-center align-items-center p-4 text-center">
                             <h6 className="text-uppercase opacity-75 mb-2">Mis Puntos Floyd</h6>
                             <div className="display-4 fw-bold d-flex align-items-center gap-2">
@@ -116,8 +111,7 @@ export const Account: React.FC = () => {
                 </Col>
             </Row>
 
-            {/* SECCIÓN INFERIOR: HISTORIAL DE RESERVAS */}
-            <Card className="shadow-sm border-0">
+            <Card className="shadow-sm border-2">
                 <Card.Header className="bg-white py-3">
                     <h5 className="mb-0 fw-bold d-flex align-items-center gap-2">
                         <FaHistory className="text-primary" /> Historial de Reservas
@@ -146,7 +140,7 @@ export const Account: React.FC = () => {
                                 {appointments.map((appt) => (
                                     <tr key={appt.id}>
                                         <td className="ps-4 fw-bold text-secondary">
-                                            {appt.time_slot?.slot_date && 
+                                            {appt.time_slot?.slot_date &&
                                                 format(parseISO(appt.time_slot.slot_date), "d 'de' MMMM, yyyy", { locale: es })
                                             }
                                         </td>
@@ -164,13 +158,13 @@ export const Account: React.FC = () => {
                                         </td>
                                         <td className="text-end pe-4">
                                             {appt.status === 'CONFIRMED' && (
-                                                <Button 
-                                                    variant="link" 
+                                                <Button
+                                                    variant="link"
                                                     className="text-danger p-0 text-decoration-none small"
                                                     onClick={() => handleCancel(appt.id)}
                                                     title="Cancelar Turno"
                                                 >
-                                                    <FaBan className="me-1"/>Cancelar
+                                                    <FaBan className="me-1" />Cancelar
                                                 </Button>
                                             )}
                                         </td>
@@ -181,6 +175,12 @@ export const Account: React.FC = () => {
                     )}
                 </Card.Body>
             </Card>
+            <div>
+                <Button variant="outline-light" className="w-100 logout-btn" onClick={logout}>
+                    Cerrar sesión
+                </Button>
+            </div>
         </Container>
+
     );
 };

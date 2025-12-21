@@ -89,7 +89,7 @@ export const AdminCalendar: React.FC = () => {
                 </Col>
 
                 <Col md={7} lg={8}>
-                    <Card className="shadow-sm border-0 h-100">
+                    <Card className="shadow-sm border-2 h-100">
                         <Card.Header className="bg-white py-3 d-flex justify-content-between align-items-center">
                             <h5 className="mb-0 text-primary fw-bold">
                                 {selectedDay ? format(selectedDay, "EEEE d 'de' MMMM", { locale: es }) : "Selecciona una fecha"}

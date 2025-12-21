@@ -153,4 +153,29 @@ export class UserController {
             });
         }
     }
+
+    getMe = async (req: Request, res: Response) => {
+        try {
+            const userId = (req as any).user.id; 
+
+            if (!userId) {
+                return res.status(400).json({ success: false, message: 'Token inválido' });
+            }
+
+            const user = await this.userService.getUser(userId);
+
+            if (!user) {
+                return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
+            }
+
+            res.json({
+                success: true,
+                data: { user }
+            });
+
+        } catch (error: any) {
+            console.error(error);
+            res.status(500).json({ success: false, message: 'Error al obtener perfil' });
+        }
+    }
 }

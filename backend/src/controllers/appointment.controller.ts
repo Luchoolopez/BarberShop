@@ -144,4 +144,33 @@ export class AppointmentController {
             })
         }
     }
+
+    updateStatus = async (req: Request, res: Response) => {
+        try {
+            const { id } = req.params;
+
+            if (!id || isNaN(Number(id))) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'El ID es invalido'
+                });
+            }
+            
+            const { status } = req.body;
+
+            if (!status) {
+                return res.status(400).json({ success: false, message: 'Falta el estado nuevo' });
+            }
+
+            const appointment = await this.appointmentService.updateAppointmentStatus(Number(id), status);
+
+            res.json({
+                success: true,
+                message: 'Estado actualizado correctamente',
+                data: appointment
+            });
+        } catch (error: any) {
+            res.status(500).json({ success: false, message: error.message });
+        }
+    }
 }

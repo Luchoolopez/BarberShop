@@ -28,7 +28,7 @@ export const Register = () => {
         e.preventDefault();
         try {
             await register(values);
-            navigate('/login', { 
+            navigate('/iniciar-sesion', { 
                 state: { successMessage: '¡Cuenta creada con éxito! Por favor iniciá sesión.' } 
             });
         } catch (err) {

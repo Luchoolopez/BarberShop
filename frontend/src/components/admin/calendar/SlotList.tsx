@@ -14,7 +14,6 @@ interface SlotListProps {
 
 export const SlotList: React.FC<SlotListProps> = ({ slots, loading, onClearDay, onSlotClick }) => {
     
-    // Helper para saber si ya pasó la hora
     const isSlotPast = (slot: TimeSlot) => {
         const now = new Date();
         const slotDate = parseISO(slot.slot_date);
@@ -24,10 +23,20 @@ export const SlotList: React.FC<SlotListProps> = ({ slots, loading, onClearDay, 
     };
 
     const getBadgeStyle = (slot: TimeSlot) => {
+        if (slot.is_booked && slot.appointment) {
+            const status = slot.appointment.status;
+
+            if (status === 'completed') {
+                return { bg: "success", className: "slot-badge border border-success", title: "Completado" };
+            }
+            
+            return { bg: "primary", className: "slot-badge", title: "Reservado" };
+        }
+
         const isPast = isSlotPast(slot);
-        if (slot.is_booked) return { bg: "primary", className: "slot-badge", title: "Reservado" };
         if (isPast) return { bg: "secondary", className: "slot-badge slot-past", title: "Pasado" };
-        return { bg: "success", className: "slot-badge", title: "Disponible" };
+
+        return { bg: "success", className: "slot-badge opacity-75", title: "Disponible" };
     };
 
     const formatTimeDisplay = (timeStr: string) => timeStr.slice(0, 5);
@@ -52,6 +61,8 @@ export const SlotList: React.FC<SlotListProps> = ({ slots, loading, onClearDay, 
                     {slots.map((slot) => {
                         const style = getBadgeStyle(slot);
                         const isPast = isSlotPast(slot);
+                        const showCheck = slot.is_booked && slot.appointment?.status === 'completed';
+
                         return (
                             <Badge
                                 key={slot.id}
@@ -62,7 +73,10 @@ export const SlotList: React.FC<SlotListProps> = ({ slots, loading, onClearDay, 
                                 title={style.title}
                             >
                                 {formatTimeDisplay(slot.start_time)}
-                                {slot.is_booked ? <FaUser size={12} /> : isPast ? <FaHistory size={12} /> : <FaCheckCircle style={{ opacity: 0.7 }} />}
+                                {showCheck ? <FaCheckCircle size={12}/> : 
+                                 slot.is_booked ? <FaUser size={12} /> : 
+                                 isPast ? <FaHistory size={12} /> : 
+                                 <FaCheckCircle style={{ opacity: 0.5 }} />}
                             </Badge>
                         );
                     })}
