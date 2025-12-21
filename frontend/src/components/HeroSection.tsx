@@ -31,6 +31,7 @@ export const HeroSection: React.FC = () => {
                     variant="dark" 
                     size="lg" 
                     className="px-4 rounded-pill fw-bold"
+                    href='/calendario-turnos'
                 >
                   Turnos
                 </Button>

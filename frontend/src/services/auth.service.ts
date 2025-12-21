@@ -26,8 +26,13 @@ export const authService = {
     },
 
     checkAuth: async (): Promise<AuthResponse['data']['user']> => {
-        const response = await apiClient.get<AuthResponse>('/auth/me');
+        const response = await apiClient.get<AuthResponse>('/user/me');
         return response.data.data.user;
+    },
+
+    getUser: async (id: number): Promise<AuthResponse['data']['user']> => {
+        const response = await apiClient.get<AuthResponse>(`/user/${id}`);
+        return response.data.data.user; 
     },
 
     getUsers: async () => {

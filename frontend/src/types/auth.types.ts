@@ -4,6 +4,7 @@ export interface User {
     name: string;
     role: 'admin' | 'client';
     phone?: string;
+    points_balance?:number;
 }
 
 export interface AuthResponse {
