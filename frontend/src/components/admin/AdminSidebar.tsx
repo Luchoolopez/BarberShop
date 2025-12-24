@@ -19,9 +19,9 @@ export const AdminSidebar = () => {
             <div>
                 <div className="mb-4 text-center">
                     <h3 className="admin-sidebar-title text-uppercase fw-bold text-white mb-0">
-                        {user?.name}
+                        FADE IT
                     </h3>
-                    <small className="text-secondary">{user?.role}</small>
+                    <small className="text-secondary">Panel de administrador</small>
                 </div>
 
                 <div className="admin-sidebar-links d-flex flex-column gap-2">
@@ -81,7 +81,7 @@ export const AdminSidebar = () => {
                 </Container>
             </Navbar>
 
-            <div className="d-none d-md-flex flex-column bg-dark border-end p-3 admin-sidebar vh-100">
+            <div className="d-none d-md-flex flex-column bg-black border-end p-3 admin-sidebar vh-100">
                 <SidebarContent />
             </div>
         </>

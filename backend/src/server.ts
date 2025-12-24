@@ -11,7 +11,7 @@ app.listen(config.port, async() => {
         await connectWithRetry();
         console.log('DB conectado');
         setupAssociations();
-        await sequelize.sync({alter:true}); //sincroniza los modelos con la db
+        await sequelize.sync({alter:true}); 
     }catch(error){
         console.error('Error conectando a la DB: ', error)
     }

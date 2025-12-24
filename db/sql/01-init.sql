@@ -75,17 +75,3 @@ CREATE TABLE IF NOT EXISTS points_history (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
-
--- 2. SEEDING (DATOS INICIALES)
--- Insertamos el Admin solo si no existe nadie (para evitar duplicados si reinicias sin borrar volumenes)
-INSERT IGNORE INTO users (id, name, email, password, phone, role, points_balance) 
-VALUES 
-(
-    1,
-    'Admin Principal', 
-    'admin@barbershop.com', 
-    '$2b$10$vI8aWBnW3fBr4ffg5d3eye.99UtvByJb5Zy.Fv09VrD3.7bx.7.7', 
-    '1122334455', 
-    'admin',
-    1000000
-);

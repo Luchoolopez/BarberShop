@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 
 export interface ServiceFormData {
@@ -31,6 +31,7 @@ export const ServiceFormModal: React.FC<ServiceFormModalProps> = ({
     initialData 
 }) => {
     const [formData, setFormData] = useState<ServiceFormData>(INITIAL_STATE);
+    const formRef = useRef<HTMLFormElement>(null);
 
     useEffect(() => {
         if (show && initialData) {
@@ -46,7 +47,7 @@ export const ServiceFormModal: React.FC<ServiceFormModalProps> = ({
         }
     }, [show, initialData]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         const isNumberField = ['price', 'duration_minutes', 'points_reward'].includes(name);
         
@@ -58,7 +59,12 @@ export const ServiceFormModal: React.FC<ServiceFormModalProps> = ({
         }));
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (formRef.current && !formRef.current.checkValidity()) {
+            formRef.current.reportValidity();
+            return;
+        }
         const finalData = {
             ...formData,
             price: formData.price === '' ? 0 : formData.price,
@@ -74,7 +80,7 @@ export const ServiceFormModal: React.FC<ServiceFormModalProps> = ({
                 <Modal.Title>{initialData ? 'Editar Servicio' : 'Nuevo Servicio'}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form>
+                <Form ref={formRef} onSubmit={handleSubmit}>
                     <Row>
                         <Col md={8}>
                             <Form.Group className="mb-3">
@@ -85,6 +91,7 @@ export const ServiceFormModal: React.FC<ServiceFormModalProps> = ({
                                     value={formData.name} 
                                     onChange={handleChange} 
                                     autoFocus 
+                                    required
                                 />
                             </Form.Group>
                         </Col>
@@ -96,6 +103,7 @@ export const ServiceFormModal: React.FC<ServiceFormModalProps> = ({
                                     name="points_reward" 
                                     value={formData.points_reward} 
                                     onChange={handleChange} 
+                                    required
                                 />
                             </Form.Group>
                         </Col>
@@ -109,6 +117,7 @@ export const ServiceFormModal: React.FC<ServiceFormModalProps> = ({
                             name="description" 
                             value={formData.description} 
                             onChange={handleChange} 
+                            required
                         />
                     </Form.Group>
                     
@@ -121,6 +130,7 @@ export const ServiceFormModal: React.FC<ServiceFormModalProps> = ({
                                     name="price" 
                                     value={formData.price} 
                                     onChange={handleChange} 
+                                    required
                                 />
                             </Form.Group>
                         </Col>
@@ -132,18 +142,19 @@ export const ServiceFormModal: React.FC<ServiceFormModalProps> = ({
                                     name="duration_minutes" 
                                     value={formData.duration_minutes} 
                                     onChange={handleChange} 
+                                    required
                                 />
                             </Form.Group>
                         </Col>
                     </Row>
+                    <div className="d-flex justify-content-end gap-2">
+                        <Button variant="secondary" onClick={onHide} type="button">Cancelar</Button>
+                        <Button variant="primary" type="submit">
+                            {initialData ? 'Guardar Cambios' : 'Crear Servicio'}
+                        </Button>
+                    </div>
                 </Form>
             </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={onHide}>Cancelar</Button>
-                <Button variant="primary" onClick={handleSubmit}>
-                    {initialData ? 'Guardar Cambios' : 'Crear Servicio'}
-                </Button>
-            </Modal.Footer>
         </Modal>
     );
 };
