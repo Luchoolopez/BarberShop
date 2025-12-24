@@ -37,7 +37,7 @@ export const AdminRewards: React.FC = () => {
     return (
         <Container className="py-5">
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h2 className="mb-0"><FaGift className="me-2 text-primary"/>Gestión de Premios</h2>
+                <h2 className="mb-0">Gestión de Premios</h2>
                 <Button variant="primary" onClick={handleCreate}>+ Nuevo Premio</Button>
             </div>
 

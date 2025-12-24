@@ -79,7 +79,6 @@ export const AdminCalendar: React.FC = () => {
             <style>{css}</style>
             
             <div className="d-flex align-items-center mb-4 gap-2">
-                <FaCalendarAlt size={24} className="text-primary" />
                 <h2 className="mb-0">Gestión de Disponibilidad</h2>
             </div>
 
@@ -91,7 +90,7 @@ export const AdminCalendar: React.FC = () => {
                 <Col md={7} lg={8}>
                     <Card className="shadow-sm border-2 h-100">
                         <Card.Header className="bg-white py-3 d-flex justify-content-between align-items-center">
-                            <h5 className="mb-0 text-primary fw-bold">
+                            <h5 className="mb-0 text-black fw-bold">
                                 {selectedDay ? format(selectedDay, "EEEE d 'de' MMMM", { locale: es }) : "Selecciona una fecha"}
                             </h5>
                             {loading && <Spinner animation="border" size="sm" variant="primary" />}

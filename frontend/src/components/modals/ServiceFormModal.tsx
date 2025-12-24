@@ -42,7 +42,6 @@ export const ServiceFormModal: React.FC<ServiceFormModalProps> = ({
                 points_reward: initialData.points_reward || 0
             });
         } else if (show && !initialData) {
-            // MODO CREAR
             setFormData(INITIAL_STATE);
         }
     }, [show, initialData]);

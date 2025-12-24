@@ -29,12 +29,9 @@ export const Account: React.FC = () => {
         setLoading(true);
         setError(null);
         try {
-            // 1. PRIMERO: Aseguramos que el usuario existe y está logueado
             const userData = await authService.checkAuth();
-            setUser(userData); // Guardamos el usuario AL TOQUE
+            setUser(userData); 
 
-            // 2. DESPUÉS: Intentamos cargar el historial y premios
-            // Si esto falla, NO rompe la pantalla del usuario, solo muestra un error
             try {
                 const [history, rewardsData] = await Promise.all([
                     appointmentService.getMyHistory(),
@@ -49,7 +46,6 @@ export const Account: React.FC = () => {
 
         } catch (e: any) {
             console.error("Fallo de autenticación:", e);
-            // Solo si falla checkAuth (401) asumimos que no hay sesión
             if (e.response && e.response.status !== 401) {
                  setError("Error de conexión al cargar el perfil.");
             }
@@ -71,7 +67,6 @@ export const Account: React.FC = () => {
         if (!window.confirm("¿Seguro querés cancelar este turno?")) return;
         try {
             await appointmentService.cancelAppointment(id);
-            // Recargamos solo el historial para no joder
             const history = await appointmentService.getMyHistory();
             setAppointments(history);
         } catch (e) {
@@ -102,7 +97,7 @@ export const Account: React.FC = () => {
             
             <Row className="g-4 mb-4">
                 <Col md={8}>
-                    <Card className="shadow-sm border-0 h-100">
+                    <Card className="shadow-sm border-2 h-100">
                         <Card.Body className="d-flex align-items-center p-4">
                             <div className="me-4 text-secondary">
                                 <FaUserCircle size={80} />
@@ -126,7 +121,7 @@ export const Account: React.FC = () => {
                 </Col>
 
                 <Col md={4}>
-                    <Card className="shadow-sm border-0 h-100 bg-primary text-white">
+                    <Card className="shadow-sm border-0 h-100 bg-black text-white">
                         <Card.Body className="d-flex flex-column justify-content-center align-items-center p-4 text-center">
                             <h6 className="text-uppercase opacity-75 mb-2">Mis Puntos Floyd</h6>
                             <div className="display-4 fw-bold d-flex align-items-center gap-2">
@@ -141,8 +136,7 @@ export const Account: React.FC = () => {
                 </Col>
             </Row>
 
-            {/* MIS PREMIOS CANJEADOS */}
-            <Card className="shadow-sm border-0 mb-4">
+            <Card className="shadow-sm border-2 mb-4">
                 <Card.Header className="bg-white py-3">
                     <h5 className="mb-0 fw-bold d-flex align-items-center gap-2 text-warning">
                         <FaGift /> Mis Premios Canjeados
@@ -185,7 +179,6 @@ export const Account: React.FC = () => {
                                             )}
                                         </td>
                                         <td className="text-end pe-4 small text-muted">
-                                            {/* Asegurate de tener created_at en tu types/reward.types.ts */}
                                             {ur.created_at && format(parseISO(ur.created_at), "dd/MM/yyyy")}
                                         </td>
                                     </tr>
@@ -196,8 +189,7 @@ export const Account: React.FC = () => {
                 </Card.Body>
             </Card>
 
-            {/* HISTORIAL DE RESERVAS */}
-            <Card className="shadow-sm border-0 mb-4">
+            <Card className="shadow-sm border-2 mb-4">
                 <Card.Header className="bg-white py-3">
                     <h5 className="mb-0 fw-bold d-flex align-items-center gap-2 text-primary">
                         <FaHistory /> Historial de Reservas
@@ -262,7 +254,7 @@ export const Account: React.FC = () => {
                 </Card.Body>
             </Card>
 
-            <div className="text-center">
+            <div>
                 <Button variant="outline-danger" onClick={logout}>
                     Cerrar sesión
                 </Button>

@@ -23,10 +23,9 @@ export const RewardClient: React.FC = () => {
     const loadData = async () => {
         try {
             setLoading(true);
-            // Ejecutamos en paralelo para ganar velocidad
             const [rewardsData, userData] = await Promise.all([
                 rewardService.getActiveRewards(),
-                authService.checkAuth() // Esto trae el usuario con los puntos frescos
+                authService.checkAuth() 
             ]);
             setRewards(rewardsData);
             setUser(userData);
@@ -42,13 +41,11 @@ export const RewardClient: React.FC = () => {
         loadData();
     }, []);
 
-    // Manejar click en "Canjear"
     const handleRedeemClick = (reward: Reward) => {
         setSelectedReward(reward);
         setShowModal(true);
     };
 
-    // Confirmar Canje
     const confirmRedeem = async () => {
         if (!selectedReward) return;
         setRedeemLoading(true);
@@ -56,7 +53,6 @@ export const RewardClient: React.FC = () => {
             await rewardService.redeemReward(selectedReward.id);
             setSuccessMsg(`¡Felicitaciones! Canjeaste "${selectedReward.name}" correctamente.`);
             setShowModal(false);
-            // Recargamos datos para actualizar el saldo de puntos
             await loadData();
         } catch (e: any) {
             alert(e.response?.data?.message || "Error al canjear el premio.");
@@ -69,13 +65,12 @@ export const RewardClient: React.FC = () => {
 
     return (
         <Container className="py-5">
-            {/* Header con Puntos */}
-            <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-5 bg-primary text-white p-4 rounded shadow-sm">
+            <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-5 bg-black text-white p-4 rounded shadow-sm">
                 <div>
                     <h2 className="fw-bold mb-1">Catálogo de Premios</h2>
                     <p className="mb-0 opacity-75">Canjeá tus puntos por servicios exclusivos.</p>
                 </div>
-                <div className="mt-3 mt-md-0 text-center bg-white text-primary px-4 py-2 rounded-pill shadow-sm">
+                <div className="mt-3 mt-md-0 text-center bg-white text-black px-4 py-2 rounded-pill shadow-sm">
                     <small className="fw-bold text-uppercase ls-1">Mis Puntos</small>
                     <div className="display-6 fw-bold d-flex align-items-center justify-content-center gap-2">
                         <FaStar className="text-warning" size={32}/> 
@@ -87,7 +82,6 @@ export const RewardClient: React.FC = () => {
             {error && <Alert variant="danger">{error}</Alert>}
             {successMsg && <Alert variant="success" dismissible onClose={() => setSuccessMsg(null)}>{successMsg}</Alert>}
 
-            {/* Grilla de Premios */}
             <Row className="g-4">
                 {rewards.length === 0 ? (
                     <Col xs={12} className="text-center py-5 text-muted">
@@ -107,7 +101,6 @@ export const RewardClient: React.FC = () => {
                 )}
             </Row>
 
-            {/* Modal de Confirmación */}
             <Modal show={showModal} onHide={() => setShowModal(false)} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirmar Canje</Modal.Title>

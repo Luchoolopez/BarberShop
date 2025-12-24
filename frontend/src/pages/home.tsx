@@ -8,7 +8,7 @@ export const Home: React.FC = () => {
   return (
     <>
       <HeroSection />
-      <AboutSection />
+      <AboutSection/>
       <PricingList />
       <Testimonials />
       

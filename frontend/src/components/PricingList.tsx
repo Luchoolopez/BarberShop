@@ -18,12 +18,12 @@ export const PricingList: React.FC = () => {
   );
 
   return (
-    <section className="py-5 bg-body-tertiary border-top border-">
+    <section className="py-5 bg-black border-top">
       <Container>
         <Row className="align-items-start g-5">
           <Col lg={5} className="text-center text-lg-start" style={{ top: '2rem' }}>
-            <h2 className="display-4 fw-bold mb-3">NUESTROS PRECIOS</h2>
-            <p className="lead text-muted mb-4">
+            <h2 className="display-4 fw-bold mb-3 text-white">NUESTROS PRECIOS</h2>
+            <p className="lead text-white-50 mb-4">
               Calidad premium al mejor precio. <br />
               Diseñados exclusivamente para tu estilo en Bahía Blanca.
             </p>
@@ -52,11 +52,6 @@ export const PricingList: React.FC = () => {
                                         <h5 className="mb-0 fw-bold text-dark">
                                             {service.name}
                                         </h5>
-                                        {/*{service.points_reward > 50 && (
-                                            <Badge bg="warning" text="dark" pill style={{ fontSize: '0.6rem' }}>
-                                                TOP
-                                            </Badge>
-                                        )}*/}
                                     </div>
                                     <div className="text-muted small">
                                         <i className="bi bi-clock me-1"></i>

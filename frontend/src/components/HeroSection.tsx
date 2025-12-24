@@ -19,11 +19,9 @@ export const HeroSection: React.FC = () => {
 
           <Col md={6}>
             <div className="p-lg-5 border-start border-secondary">
-              <h2 className="h1 mb-3 fw-light">Tu estilo, sin filtros.</h2>
+              <h2 className="h1 mb-3 fw-light">Cortes, barba y estilo personal.</h2>
               <p className="lead mb-4 opacity-75">
-                La forma más simple de conectar con tu mejor versión. 
-                Gestioná tus turnos, elegí tu profesional y olvidate de las esperas.
-                Fade It es donde tu imagen toma vuelo.
+Elegí tu profesional, reservá tu turno y renová tu look sin esperas. Somos una peluquería y barbería pensada para quienes cuidan su imagen.
               </p>
               
               <div className="d-flex gap-3 justify-content-center justify-content-md-start">

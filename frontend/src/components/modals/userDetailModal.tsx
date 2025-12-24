@@ -8,7 +8,6 @@ interface UserDetailModalProps {
     show: boolean;
     onHide: () => void;
     user: User | null; 
-    // ESTA ES LA PROPIEDAD QUE TE FALTABA DEFINIR:
     onMarkAsUsed: (rewardId: number) => void; 
 }
 
@@ -21,7 +20,6 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({ show, onHide, 
                 <Modal.Title>Detalle de Usuario: {user.name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {/* Datos del usuario */}
                 <div className="row mb-4">
                     <div className="col-md-6">
                         <p><strong>Email:</strong> {user.email}</p>

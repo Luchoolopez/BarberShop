@@ -12,7 +12,7 @@ interface ServiceSelectorProps {
 export const ServiceSelector: React.FC<ServiceSelectorProps> = ({ services, selectedService, onSelect }) => {
     return (
         <Card className="mb-4 shadow-sm border-2">
-            <Card.Header className="bg-white fw-bold text-primary">
+            <Card.Header className="bg-white fw-bold text-black">
                 <FaCut className="me-2" /> 1. Elegí tu servicio
             </Card.Header>
             <Card.Body>
