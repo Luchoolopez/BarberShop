@@ -59,6 +59,7 @@ export class UserController {
 
     getUser = async (req: Request, res: Response) => {
         try {
+            
             const { id } = req.params;
             if (!id || isNaN(Number(id))) {
                 return res.status(400).json({
@@ -90,7 +91,11 @@ export class UserController {
 
     getUsers = async (req: Request, res: Response) => {
         try {
-            const users = await this.userService.getAllUsers();
+
+            const page = Number(req.query.page) || 1;
+            const limit = Number(req.query.limit) || 10;
+
+            const users = await this.userService.getAllUsers(page, limit);
 
             return res.status(200).json({
                 success: true,

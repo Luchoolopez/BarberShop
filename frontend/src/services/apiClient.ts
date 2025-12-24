@@ -1,25 +1,36 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api';
-
 const apiClient = axios.create({
-    baseURL: API_URL,
+    baseURL: 'http://localhost:3000/api', 
     headers: {
-        'Content-Type': 'application/json',
-    },
+        'Content-Type': 'application/json'
+    }
 });
 
-// Interceptor para añadir el token a CADA petición
 apiClient.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('accessToken');
-        if (token) {
-            config.headers ??= {}; // garantiza que headers siempre sea objeto 
+        if (token && config.headers) {
             config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
     },
+    (error) => Promise.reject(error)
+);
+
+apiClient.interceptors.response.use(
+    (response) => response,
     (error) => {
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+            
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('user');
+
+
+            if (window.location.pathname !== '/iniciar-sesion') {
+                window.location.href = '/iniciar-sesion';
+            }
+        }
         return Promise.reject(error);
     }
 );

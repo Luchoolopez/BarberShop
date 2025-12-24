@@ -9,6 +9,9 @@ import { AdminRoute } from './AdminRoute';
 import { AdminServices } from '../pages/admin/AdminServices';
 import { AdminLayout } from '../layout/AdminLayout';
 import { AdminCalendar } from '../pages/admin/AdminCalendar';
+import { AdminRewards } from '../pages/admin/AdminReward';
+import { RewardClient } from '../pages/Reward';
+import { AdminUsers } from '../pages/admin/AdminUser';
 
 export function AppRouter() {
     return (
@@ -18,13 +21,16 @@ export function AppRouter() {
                 <Route path='/iniciar-sesion' element={<Login />}></Route>
                 <Route path='/registrarse' element={<Register />} />
                 <Route path='/mi-perfil' element={<Account />} />
-                <Route path='/calendario-turnos' element={<Calendar/>}/>
+                <Route path='/calendario-turnos' element={<Calendar />} />
+                <Route path='/premios' element={<RewardClient />} />
             </Route>
 
             <Route element={<AdminRoute />}>
-                <Route element={<AdminLayout/>}>
+                <Route element={<AdminLayout />}>
+                    <Route path='/admin/usuarios' element={<AdminUsers />} />
                     <Route path='/admin/servicios' element={<AdminServices />} />
-                    <Route path='/admin/calendario' element={<AdminCalendar/>}/>
+                    <Route path='/admin/calendario' element={<AdminCalendar />} />
+                    <Route path='/admin/premios' element={<AdminRewards />} />
                 </Route>
             </Route>
         </Routes>

@@ -65,7 +65,8 @@ export class RewardService {
             where: { user_id: userId },
             include: [
                 {
-                    model: Reward
+                    model: Reward,
+                    as:'reward'
                 }
             ],
             order: [['created_at', 'DESC']]

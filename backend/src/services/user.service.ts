@@ -1,3 +1,5 @@
+import { Reward } from "../models/reward.model";
+import { UserReward } from "../models/user-reward.model";
 import { User } from "../models/user.model";
 import { registerUserType, LoginUserType, UpdateUserType } from "../validations/user.schema";
 import bcrypt from 'bcrypt';
@@ -53,23 +55,41 @@ export class UserService {
 
     }
 
-    async getUser(id:number):Promise<User | null>{
-        if(!id){
-            throw new Error('ID invalido');
-        }
+async getUser(id: number): Promise<User | null> {
+        if (!id) throw new Error('ID invalido');
+        
         const user = await User.findByPk(id, {
-            attributes: {exclude: ['password']}
+            attributes: { exclude: ['password'] },
+            include: [
+                {
+                    model: UserReward,
+                    as: 'redeemedRewards', // Según tus asociaciones
+                    include: [{ model: Reward, as: 'reward' }] // Para ver el nombre del premio
+                }
+            ]
         });
-        if(!user){
-            throw new Error('Usuario no encontrado');
-        }
+
+        if (!user) throw new Error('Usuario no encontrado');
         return user;
     }
 
-    async getAllUsers():Promise<User[]>{
-        return await User.findAll({
-            attributes:{exclude: ['password']}
+async getAllUsers(page: number = 1, limit: number = 10) {
+        const offset = (page - 1) * limit;
+
+        const { rows, count } = await User.findAndCountAll({
+            attributes: { exclude: ['password'] },
+            limit: limit,
+            offset: offset,
+            order: [['created_at', 'DESC']], 
+            distinct: true 
         });
+
+        return {
+            users: rows,
+            totalItems: count,
+            totalPages: Math.ceil(count / limit),
+            currentPage: page
+        };
     }
 
     async promoteToAdmin(id:number):Promise<User>{

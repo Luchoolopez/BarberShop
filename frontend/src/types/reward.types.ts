@@ -15,7 +15,8 @@ export interface UserReward {
     reward_id: number;
     is_used: boolean;
     used_at: string | null;
-    reward?: Reward; 
+    created_at: string;
+    reward?: Reward;
 }
 
 export interface CreateRewardDTO {

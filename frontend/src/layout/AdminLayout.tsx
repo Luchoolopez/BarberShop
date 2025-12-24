@@ -3,12 +3,13 @@ import { AdminSidebar } from '../components/admin/AdminSidebar';
 
 export const AdminLayout = () => {
     return (
-        <div className="admin-layout-container" style={{ display: 'flex' }}>
+        <div className="d-flex flex-column flex-md-row min-vh-100 bg-light">
+            
             <AdminSidebar />
 
-            <Outlet />
-
-
+            <main className="flex-grow-1 p-3 overflow-auto" style={{ height: '100vh' }}>
+                <Outlet />
+            </main>
         </div>
     );
 };
