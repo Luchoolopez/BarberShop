@@ -5,14 +5,14 @@ import { makeApp } from './app';
 
 const app = makeApp();
 
-app.listen(config.port, async() => {
+app.listen(config.port, async () => {
     console.log(`Servidor corriendo en el puerto: ${config.port}`);
-    try{
+    try {
         await connectWithRetry();
         console.log('DB conectado');
         setupAssociations();
-        await sequelize.sync({alter:true}); 
-    }catch(error){
-        console.error('Error conectando a la DB: ', error)
+        await sequelize.sync({ alter: true });
+    } catch (error) {
+        console.error('Error conectando a la DB: ', error);
     }
-})
+});
