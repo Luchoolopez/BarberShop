@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 
 import type { LoginDTO, RegisterDTO, AuthResponse } from "../types/auth.types";
@@ -23,7 +22,7 @@ export const useAuth = () => {
             navigate('/');
             return reponse;
         } catch (error: any) {
-            if (error instanceof AxiosError) {
+            if (error) {
                 const errorData = error.response?.data as ApiError;
                 const errorMessage = errorData?.message || errorData?.error || 'Error al iniciar sesion';
                 setError(errorMessage);
@@ -44,7 +43,7 @@ export const useAuth = () => {
             await authService.register(data);
             navigate('/login');
         } catch (error:any) {
-            if (error instanceof AxiosError) {
+            if (error) {
                 const errorData = error.response?.data as ApiError;
                 setError(errorData?.message || "Error al registrarse");
             } else {
