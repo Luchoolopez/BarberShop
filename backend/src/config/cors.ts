@@ -9,11 +9,10 @@ const corsOptions: cors.CorsOptions = {
             return callback(null, true)
         }
 
-        /*
-        Por si lo llego a subir a vercel
+        
         if(origin.endsWith('.vercel.app')){
             return callback(null, true)
-        }*/
+        }
 
         console.error('Bloqueado por CORS: ', origin);
         callback(new Error('Not allowed by cors'));
