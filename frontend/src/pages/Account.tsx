@@ -200,7 +200,7 @@ export const Account: React.FC = () => {
                         <div className="text-center py-5 text-muted">
                             <FaCalendarAlt size={40} className="mb-3 opacity-50" />
                             <p>Aún no tenés reservas registradas.</p>
-                            <Button variant="outline-primary" href="/reservar">Reservar Turno</Button>
+                            <Button variant="outline-primary" href="/calendario-turnos">Reservar Turno</Button>
                         </div>
                     ) : (
                         <Table responsive hover className="mb-0 align-middle">
