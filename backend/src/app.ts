@@ -1,5 +1,5 @@
 import express from 'express';
-import cors from 'cors';
+import corsMiddleware from './config/cors';
 import { router } from './routes';
 
 export function makeApp() {
@@ -7,20 +7,8 @@ export function makeApp() {
 
     app.use(express.json());
 
-    const allowedOrigins = ['http://localhost:5173'];
-    if (process.env.FRONTEND_URL) {
-        allowedOrigins.push(process.env.FRONTEND_URL);
-    }
+    app.use(corsMiddleware);
 
-    const corsOptions = {
-        origin: allowedOrigins,
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-        credentials: true,
-        allowedHeaders: 'Content-type, Authorization',
-        optionSuccessStatus: 204,
-    };
-
-    app.use(cors(corsOptions));
     app.use(express.urlencoded({ extended: true }));
 
     app.use('/api', router);
